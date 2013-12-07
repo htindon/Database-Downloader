@@ -40,6 +40,7 @@ I will check each link and return only those that are valid.
 sub	getLinks
 {
 	@urls = ('http://tour-of-africa.com/index.php');
+	
 	return @urls;
 }
 
@@ -65,5 +66,26 @@ sub	getFiles
 		$i--;
 	}
 }
+
 &createFolder();
 &getFiles(@urls);
+
+=begin comment
+Here is what I have to do next:
+- insert my keyword in this kind of link (here looking for images, i'll have to handle the filetypes) :
+view-source:http://gallica.bnf.fr/Search?ArianeWireIndex=index&lang=FR&q=Maryse+Basti%C3%A9&x=-708&y=-73&p=1&f_typedoc=images
+- lookup the next <a href=" content to retrieve the link
+- save the links
+- check the links
+- send a form to each one of those pages
+- extract the new links
+- generate a txt file containing them
+- check them
+- download each file using each of those links
+
+POSSIBLE NEXT IMPROVMENTS :
+
+- use the text file to record which links aren't working and why (error type ?)
+- write a seperate function that will ask if the faulty files need to be checked again (even if working in another folder)
+=end comment
+=cut
