@@ -1,11 +1,5 @@
 =begin comment
 I use the LWP::Simple library to have acess to getstore() function.
-It will download the file whose address is given is $url and save it
-as $filename.
-
-I use an array to store the links to the files to download.
-I use the variable $i to iterate through it.
-
 I tried to check my links using head() but cannot get around it yet
 so I will see that later.
 =end comment
@@ -21,7 +15,7 @@ resulting files downloaded with the valid links only.
 I will expand that to work on it deeper if it's a name.
 =end comment
 =cut
-sub createFolder
+sub	createFolder
 {
 	print "input your search query main qualifier (ex : if you are looking for a person only by his or her family name, input     his or her full name here).\n";
 	$nameQuery = <STDIN>;
@@ -43,30 +37,33 @@ A list of links will be generated and stored in a text file.
 I will check each link and return only those that are valid.
 =end comment
 =cut
-sub getLinks
+sub	getLinks
 {
 	@urls = ('http://tour-of-africa.com/index.php');
+	return @urls;
 }
-
 
 =begin comment
 The following function, named getFiles, will download the files and store
 them. Their names and extensions are derived from the urls.
 =end comment
 =cut
-sub getFiles
+sub	getFiles
 {
+	getLinks();
 	$i = length @urls;
 	print "$i files to download:\n";
 	$i--;
 	while ($i >= 0)
 	{
+		print "@urls";
 		$url = $urls[$i];
 		$ua->show_progress(1);
-		$filename = $url =~ /.*\/(.*?)\.(.*)/;
+		$filename = $url;
+		$filename =~ s/.*\/([^\/]*)$/$1/;
 		getstore($url, $filename);
 		$i--;
 	}
 }
-createFolder();
-getFiles();
+&createFolder();
+&getFiles(@urls);
