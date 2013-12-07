@@ -25,7 +25,7 @@ sub	createFolder
 		mkdir($nameQuery, 0777);
 		chdir($nameQuery) or die "can't use this folder or folder name";
 	}
-
+	return $nameQuery;
 }
 
 =begin comment
@@ -39,8 +39,11 @@ I will check each link and return only those that are valid.
 =cut
 sub	getLinks
 {
-	@urls = ('http://tour-of-africa.com/index.php');
-	
+	createFolder();
+	$nameQuery =~ s/\G[ ]{2}/"+"/g; #find spaces and replace them with +
+	@search_url = ("http://gallica.bnf.fr/Search?ArianeWireIndex=index&lang=FR&q=" . $nameQuery . "&x=-722&y=-73&p=1&f_typedoc=images");
+	open FILE, "links.txt" #this is where I stopped for today, have to handle file creation now
+	@urls = 
 	return @urls;
 }
 
@@ -75,6 +78,7 @@ Here is what I have to do next:
 - insert my keyword in this kind of link (here looking for images, i'll have to handle the filetypes) :
 view-source:http://gallica.bnf.fr/Search?ArianeWireIndex=index&lang=FR&q=Maryse+Basti%C3%A9&x=-708&y=-73&p=1&f_typedoc=images
 - lookup the next <a href=" content to retrieve the link
+- handle the next page thingie
 - save the links
 - check the links
 - send a form to each one of those pages
