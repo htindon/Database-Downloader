@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    main.pl                                            :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: htindon <htindon@student.42.fr>            +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2013/12/09 01:09:20 by htindon           #+#    #+#              #
+#    Updated: 2013/12/09 01:20:09 by htindon          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 =begin comment
 I use the LWP::Simple library to have acess to getstore() function.
 I tried to check my links using head() but cannot get around it yet
@@ -5,7 +17,12 @@ so I will see that later.
 =end comment
 =cut
 
-use LWP::Simple qw($ua getstore head);
+use warnings;
+use strict;
+use LWP::Simple qw($ua getstore);
+
+my @urls;
+my $nameQuery;
 
 =begin comment
 The following function, named createFolder will create a folder using 
@@ -17,7 +34,7 @@ I will expand that to work on it deeper if it's a name.
 =cut
 sub	createFolder
 {
-	print "input your search query main qualifier (ex : if you are looking for a person only by his or her family name, input     his or her full name here).\n";
+	print "input your search query main qualifier (ex : if you are looking for a person only by his or her family name, input his or her full name here).\n";
 	$nameQuery = <STDIN>;
 	chomp$nameQuery;
 	unless (chdir($nameQuery))
@@ -39,12 +56,20 @@ I will check each link and return only those that are valid.
 =cut
 sub	getLinks
 {
+	my @searchUrl;
+	my $i = 0;
+	
 	createFolder();
 	$nameQuery =~ s/\G[ ]{2}/"+"/g; #find spaces and replace them with +
-	@search_url = ("http://gallica.bnf.fr/Search?ArianeWireIndex=index&lang=FR&q=" . $nameQuery . "&x=-722&y=-73&p=1&f_typedoc=images");
-	open FILE, "links.txt" #this is where I stopped for today, have to handle file creation now
-	@urls = 
-	return @urls;
+	@searchUrl = ("http://gallica.bnf.fr/Search?ArianeWireIndex=index&lang=FR&q=" . $nameQuery . "&x=-722&y=-73&p=1&f_typedoc=images");
+	@urls = qw(http://www.google.fr http://www.google.com);
+	open(MYFILE, ">>links.txt");
+	while (<MYFILE> and $i < scalar @urls)
+	{
+		print MYFILE "$urls[$i]\n";
+		$i++;
+	}
+	close (MYFILE);
 }
 
 =begin comment
@@ -54,13 +79,17 @@ them. Their names and extensions are derived from the urls.
 =cut
 sub	getFiles
 {
+	my $i;
+	my $url;
+	my $filename;
+
 	getLinks();
-	$i = length @urls;
+	$i = scalar (@urls);
 	print "$i files to download:\n";
+	print "@urls\n";
 	$i--;
 	while ($i >= 0)
 	{
-		print "@urls";
 		$url = $urls[$i];
 		$ua->show_progress(1);
 		$filename = $url;
@@ -70,8 +99,7 @@ sub	getFiles
 	}
 }
 
-&createFolder();
-&getFiles(@urls);
+&getFiles();
 
 =begin comment
 Here is what I have to do next:
