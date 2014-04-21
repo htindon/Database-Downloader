@@ -1,0 +1,27 @@
+body {
+	background-color:#6C8CD5;
+}
+
+#navbar ul {
+	margin:center;
+	text-align:center;
+	width:80%;
+	height:50px;
+	margin:auto;
+	border-radius:10px;
+	background-color:#4671D5;
+}
+
+#navbar li {
+	display:inline;
+	padding:10px;
+	text-align:center;
+	vertical-align:text-middle;
+	border:1px solid black;
+}
+
+#navbar a {
+	text-decoration:none;
+	font-family:Verdana;
+	color:#06266F;
+}
